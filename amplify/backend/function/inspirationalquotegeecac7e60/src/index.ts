@@ -10,15 +10,15 @@ Amplify Params - DO NOT EDIT */
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 // AWS packages.
-import AWS from 'aws-sdk';
-const docClient = new AWS.DynamoDB.DocumentClient();
+import AWSDynamoDB from 'aws-sdk/clients/dynamodb';
+const docClient = new AWSDynamoDB.DocumentClient();
 
 // Image generation packages
 import sharp from 'sharp';
 import fetch from 'node-fetch';
 import path from 'path';
 import fs from 'fs';
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import type { APIGatewayProxyEvent, APIGatewayProxyResult, Handler } from 'aws-lambda';
 import type { UpdateItemInput } from 'aws-sdk/clients/dynamodb';
 
 // Function: update DynamoDB table
@@ -51,7 +51,7 @@ async function updateQuoteDDBObject() {
     }
 }
 
-export const handler = async (event:APIGatewayProxyEvent):Promise<APIGatewayProxyResult> => {
+export const handler:Handler = async (event:APIGatewayProxyEvent):Promise<APIGatewayProxyResult> => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
     const apiURL = "https://zenquotes.io/api/random";
 
@@ -145,7 +145,7 @@ export const handler = async (event:APIGatewayProxyEvent):Promise<APIGatewayProx
         const timestamp = new Date().toLocaleString().replace(/[^\d]/g, "");
         const svgBuffer = Buffer.from(svgImage);
         
-        const imagePath = path.join('/tmp', 'quote-card.png');
+        const imagePath = path.join('/tmp', `${timestamp}_quote-card.png`);
         const image = await sharp(selectedBackgroundImage)
           .composite([
             {
