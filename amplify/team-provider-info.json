@@ -18,7 +18,7 @@
       "function": {
         "inspirationalquotegeecac7e60": {
           "deploymentBucketName": "amplify-inspirationalquotege-dev-145215-deployment",
-          "s3Key": "amplify-builds/inspirationalquotegeecac7e60-4c43516f745664684a56-build.zip"
+          "s3Key": "amplify-builds/inspirationalquotegeecac7e60-70454559444f504f7448-build.zip"
         }
       },
       "api": {
