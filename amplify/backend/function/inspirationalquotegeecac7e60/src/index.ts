@@ -10,28 +10,32 @@ Amplify Params - DO NOT EDIT */
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 // AWS packages.
-const AWS = require('aws-sdk');
-const docClient = new AWS.DynamoDB.DocumentClient();
+import AWSDynamoDb from 'aws-sdk/clients/dynamodb';
+const docClient = new AWSDynamoDb.DocumentClient();
 
 // Image generation packages
-const sharp = require('sharp');
-const fetch = require('node-fetch');
-const path = require('path');
-const fs = require('fs');
+import sharp from 'sharp';
+import fetch from 'node-fetch';
+import path from 'path';
+import fs from 'fs';
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
+import type { UpdateItemInput } from 'aws-sdk/clients/dynamodb';
 
 // Function: update DynamoDB table
 async function updateQuoteDDBObject() {
-    const quoteTableName = process.env.API_INSPIRATIONALQUOTEGE_QUOTEAPPDATATABLE_NAME;
+    const quoteTableName = process.env.API_INSPIRATIONALQUOTEGE_QUOTEAPPDATATABLE_NAME!;
     const quoteObjectID = "12232-234234-234234234-234234234";
 
     try {
-        var quoteParams = {
+        const quoteParams:UpdateItemInput = {
             TableName: quoteTableName,
             Key: {
+              //@ts-ignore
                 "id": quoteObjectID,
             },
             UpdateExpression: "SET #quotesGenerated = #quotesGenerated + :inc",
             ExpressionAttributeValues: {
+              // @ts-ignore
                 ":inc": 1,
             },
             ExpressionAttributeNames: {
@@ -47,12 +51,12 @@ async function updateQuoteDDBObject() {
     }
 }
 
-exports.handler = async (event) => {
+export const handler = async (event:APIGatewayProxyEvent):Promise<APIGatewayProxyResult> => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
     const apiURL = "https://zenquotes.io/api/random";
 
     // Function: Generate quote image
-    async function getRandomQuote(apiURLInput) {
+    async function getRandomQuote(apiURLInput:string) {
         // My quote is...
         let quoteText;
         // Author name here...
