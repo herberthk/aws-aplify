@@ -10,8 +10,8 @@ Amplify Params - DO NOT EDIT */
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 // AWS packages.
-import AWSDynamoDb from 'aws-sdk/clients/dynamodb';
-const docClient = new AWSDynamoDb.DocumentClient();
+import AWS from 'aws-sdk';
+const docClient = new AWS.DynamoDB.DocumentClient();
 
 // Image generation packages
 import sharp from 'sharp';
