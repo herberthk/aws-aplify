@@ -15,9 +15,11 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
+    "aws-lambda": "^1.0.7",
     "aws-sdk": "^2.1404.0",
     "node-fetch": "^2.6.8",
     "path": "^0.12.7",
     "sharp": "^0.32.1"
-  }
+  },
+  "amplify:inspirationalquotegeecac7e60": "cd amplify/backend/function/inspirationalquotegeecac7e60/src && tsc"
 }
